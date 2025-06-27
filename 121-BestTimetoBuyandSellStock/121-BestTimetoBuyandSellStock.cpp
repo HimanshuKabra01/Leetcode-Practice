@@ -1,4 +1,4 @@
-// Last updated: 6/27/2025, 4:30:10 PM
+// Last updated: 6/27/2025, 4:31:18 PM
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -8,7 +8,10 @@ public:
         int maxProfit = 0;
 
         for(int i = 1; i < n; i++) {
-            maxProfit = max(maxProfit, prices[i]-bestBuy);
+            if(prices[i] > bestBuy) {
+             maxProfit = max(maxProfit, prices[i]-bestBuy);   
+            }
+            
 
             bestBuy = min(bestBuy, prices[i]);
         }
