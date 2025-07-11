@@ -1,4 +1,4 @@
-// Last updated: 6/7/2025, 5:39:29 PM
+// Last updated: 7/11/2025, 5:20:13 PM
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
