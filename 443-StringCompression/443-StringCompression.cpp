@@ -1,4 +1,4 @@
-// Last updated: 7/20/2025, 2:31:46 PM
+// Last updated: 7/20/2025, 2:32:08 PM
 class Solution {
 public:
     int compress(vector<char>& chars) {
