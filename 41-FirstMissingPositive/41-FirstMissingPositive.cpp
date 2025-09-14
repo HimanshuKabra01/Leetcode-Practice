@@ -1,10 +1,9 @@
-// Last updated: 9/6/2025, 10:06:33 AM
+// Last updated: 9/15/2025, 1:34:26 AM
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
         int n = nums.size();
-        int misNum = 1;
-
+        
         sort(nums.begin(), nums.end());
         unordered_set<int> s;
         for(int i = 0; i < n; i++){
