@@ -1,10 +1,9 @@
-// Last updated: 9/13/2025, 10:08:01 PM
+// Last updated: 9/15/2025, 11:36:12 PM
 class Solution {
 public:
     int smallestAbsent(vector<int>& nums) {
         int n = nums.size();
         int sum = 0;
-        int misNum = 0;
 
         sort(nums.begin(), nums.end());
         unordered_set<int> s;
