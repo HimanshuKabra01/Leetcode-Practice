@@ -1,24 +1,28 @@
-// Last updated: 9/19/2025, 8:04:36 PM
+// Last updated: 9/19/2025, 8:14:33 PM
 class Solution {
 public:
-    void getPermute(vector<int>& nums, vector<vector<int>>& ans, int idx){
+    set<vector<int>> s;
+    void getPermute(vector<int>& nums, int idx, vector<vector<int>>& ans) {
         if(idx == nums.size()) {
-            ans.push_back({nums});
+            if(s.find(nums) == s.end()) {
+                ans.push_back({nums});
+                s.insert(nums);
+            }
             return;
         }
 
         for(int i = idx; i < nums.size(); i++) {
             swap(nums[idx], nums[i]);
-            getPermute(nums, ans, idx+1);
-            //backtracking
-
+            getPermute(nums, idx+1, ans);
             swap(nums[idx], nums[i]);
         }
     }
-    vector<vector<int>> permute(vector<int>& nums) {
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
         vector<vector<int>> ans;
 
-        getPermute(nums, ans, 0);
+        sort(nums.begin(), nums.end());
+
+        getPermute(nums, 0, ans);
 
         return ans;
     }
