@@ -1,25 +1,40 @@
-// Last updated: 9/18/2025, 11:50:12 PM
+// Last updated: 9/19/2025, 4:15:22 PM
 class Solution {
 public:
-    int getCommon(vector<int>& nums1, vector<int>& nums2) {
-        int n1 = nums1.size();
-        int n2 = nums2.size();
-        unordered_set<int> s;
-        int smallCom = -1;
-
-        for(int i = 0; i < n1; i++) {
-            if(s.find(nums1[i]) == s.end()) {
-                s.insert(nums1[i]);
-            }
+    set<vector<int>> s;
+    void getComb(vector<int>& arr, vector<vector<int>>& ans, int idx, vector<int>& combin, int tar) {
+        int n = arr.size();
+        if(idx == n || tar < 0) {
+            return;
         }
 
-        for(int i = 0; i < n2; i++) {
-            if(s.find(nums2[i]) != s.end()) {
-                smallCom = nums2[i];
-                break;
+        if(tar == 0) {
+            if(s.find(combin) == s.end()) {
+                ans.push_back({combin});
+                s.insert(combin);
             }
+
+            return;
         }
 
-        return smallCom;
+        combin.push_back(arr[idx]);
+
+        //single
+        getComb(arr, ans, idx+1, combin, tar-arr[idx]);
+        //multiple
+        getComb(arr, ans, idx, combin, tar-arr[idx]);
+
+        //backtracking
+        combin.pop_back();
+        getComb(arr, ans, idx+1, combin, tar);
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& arr, int target) {
+        vector<vector<int>> ans;
+        vector<int> combin;
+
+        getComb(arr, ans, 0, combin, target);
+
+        return ans;
     }
 };
