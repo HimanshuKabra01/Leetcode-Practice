@@ -1,40 +1,18 @@
-// Last updated: 9/19/2025, 4:15:22 PM
+// Last updated: 9/25/2025, 7:15:15 PM
 class Solution {
 public:
-    set<vector<int>> s;
-    void getComb(vector<int>& arr, vector<vector<int>>& ans, int idx, vector<int>& combin, int tar) {
-        int n = arr.size();
-        if(idx == n || tar < 0) {
-            return;
-        }
+    std::vector<int> plusOne(std::vector<int>& digits) {
+        int n = digits.size();
 
-        if(tar == 0) {
-            if(s.find(combin) == s.end()) {
-                ans.push_back({combin});
-                s.insert(combin);
+        for (int i = n - 1; i >= 0; i--) {
+            digits[i]++;
+
+            if (digits[i] < 10) {
+                return digits;
             }
-
-            return;
+            digits[i] = 0;
         }
-
-        combin.push_back(arr[idx]);
-
-        //single
-        getComb(arr, ans, idx+1, combin, tar-arr[idx]);
-        //multiple
-        getComb(arr, ans, idx, combin, tar-arr[idx]);
-
-        //backtracking
-        combin.pop_back();
-        getComb(arr, ans, idx+1, combin, tar);
-    }
-
-    vector<vector<int>> combinationSum(vector<int>& arr, int target) {
-        vector<vector<int>> ans;
-        vector<int> combin;
-
-        getComb(arr, ans, 0, combin, target);
-
-        return ans;
+        digits.insert(digits.begin(), 1);
+        return digits;
     }
 };
