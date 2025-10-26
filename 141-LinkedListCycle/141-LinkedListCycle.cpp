@@ -1,4 +1,4 @@
-// Last updated: 10/25/2025, 1:20:03 AM
+// Last updated: 10/26/2025, 7:05:33 PM
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -9,19 +9,32 @@
  */
 class Solution {
 public:
-    bool hasCycle(ListNode *head) {
+    ListNode *detectCycle(ListNode *head) {
         ListNode* slow = head;
         ListNode* fast = head;
+        bool isCycle = false;
 
         while(fast != NULL && fast->next != NULL) {
             slow = slow->next;
             fast = fast->next->next;
 
             if(slow == fast) {
-                return true;
+                isCycle = true;
+                break;
             }
         }
 
-        return false;
+        if(!isCycle) {
+            return NULL;
+        }
+
+        slow = head;
+
+        while(slow != fast) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+
+        return slow;
     }
 };
