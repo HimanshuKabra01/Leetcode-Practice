@@ -1,30 +1,23 @@
-// Last updated: 1/11/2026, 11:04:20 AM
+// Last updated: 1/11/2026, 11:18:55 AM
 1class Solution {
 2public:
-3    int residuePrefixes(string s) {
-4        unordered_set<char> st;
-5        int ans = 0;
-6        int n = s.size();
-7
-8        string prefix = "";
-9        int dist = 0;
-10
-11        for(int i = 0; i < n; i++) {
-12            prefix += s[i];
+3    int centeredSubarrays(vector<int>& nums) {
+4       int n = nums.size();
+5       int ans = 0;
+6
+7        for(int i = 0; i < n; i++) {
+8            int sum = 0;
+9            unordered_set<int> st;
+10            for(int j = i; j < n; j++) {
+11                sum += nums[j];
+12                st.insert(nums[j]);
 13
-14            if(st.find(s[i]) == st.end()) {
-15                dist++;
-16
-17                st.insert(s[i]);
-18            }
+14                if(st.find(sum) != st.end()) {
+15                    ans++;
+16                }
+17            }
+18        }
 19
-20            int resi = (prefix.size() % 3);
-21
-22            if(dist == resi) {
-23                ans++;
-24            }
-25        }
-26
-27        return ans;
-28    }
-29};
+20        return ans;
+21    }
+22};
