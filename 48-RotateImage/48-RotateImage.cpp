@@ -1,19 +1,17 @@
-// Last updated: 12/17/2025, 11:55:39 PM
+// Last updated: 1/11/2026, 10:54:21 AM
 1class Solution {
 2public:
-3    int reverseBits(int n) {
-4        long long result = 0;
+3    void rotate(vector<vector<int>>& mat) {
+4        int n = mat.size();
 5
-6        for(int i = 0; i < 32; i++) {
-7            result <<= 1;
-8
-9            if(n & 1) {
-10                result++;
-11            }
-12
-13            n >>= 1;
+6        for(int i = 0; i < n; i++) {
+7            for(int j = i + 1; j < n; j++) {
+8                swap(mat[i][j], mat[j][i]);
+9            }
+10        }
+11
+12        for(int i = 0; i < n; i++) {
+13            reverse(mat[i].begin(), mat[i].end());
 14        }
-15
-16        return result;
-17    }
-18};
+15    }
+16};
