@@ -1,4 +1,4 @@
-// Last updated: 1/24/2026, 3:15:44 PM
+// Last updated: 1/24/2026, 3:23:38 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,32 +12,33 @@
 11 */
 12class Solution {
 13public:
-14    unordered_set<int> s;
-15    void rec(TreeNode* root, int &ans) {
-16        if(root == NULL){
-17            return;
-18        }
-19
-20        ans += root->val;
+14    void rec(TreeNode* root, vector<vector<int>> &ans, vector<int> &subAns, int targetSum, int &currSum) {
+15        if(root == NULL){
+16            return;
+17        }
+18
+19        currSum += root->val;
+20        subAns.push_back(root->val);
 21
 22        if(root->left == NULL && root->right == NULL) {
-23            s.insert(ans);
-24        }
-25
-26        rec(root->left, ans);
-27        rec(root->right, ans);
-28
-29        ans -= root->val;
-30    }
-31    bool hasPathSum(TreeNode* root, int targetSum) {
-32        int ans = 0;
-33
-34        rec(root, ans);
-35
-36        if(s.find(targetSum) == s.end()) {
-37            return false;
-38        } else {
-39            return true;
-40        }
-41    }
-42};
+23            if(currSum == targetSum) {
+24                ans.push_back({subAns});
+25            }
+26        }
+27
+28        rec(root->left, ans, subAns, targetSum, currSum);
+29        rec(root->right, ans, subAns, targetSum, currSum);
+30
+31        currSum -= root->val;
+32        subAns.pop_back();
+33    }
+34    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+35        vector<vector<int>> ans;
+36        vector<int> subAns;
+37        int currSum = 0;
+38
+39        rec(root, ans, subAns, targetSum, currSum);
+40
+41        return ans;
+42    }
+43};
