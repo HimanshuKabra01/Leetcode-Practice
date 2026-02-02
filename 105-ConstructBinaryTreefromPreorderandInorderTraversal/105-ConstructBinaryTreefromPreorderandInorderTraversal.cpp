@@ -1,4 +1,4 @@
-// Last updated: 2/2/2026, 2:00:21 AM
+// Last updated: 2/2/2026, 3:42:10 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,31 +12,32 @@
 11 */
 12class Solution {
 13public:
-14    TreeNode* makeTree(vector<int>& preorder, vector<int>& inorder, int &idx, int inSt, int inEnd) {
-15        if(inEnd < inSt) {
-16            return NULL;
-17        }
-18        
-19        TreeNode* root = new TreeNode(preorder[idx]);
-20
-21        int inIdx = -1;
-22        for(int i = 0; i < inorder.size(); i++) {
-23            if(preorder[idx] == inorder[i]) {
-24                inIdx = i;
-25                break;
-26            }
-27        }
-28        idx++;
+14    TreeNode* helper(vector<int> &inorder, vector<int> &postorder, int &idx, int left, int right) {
+15
+16        if(left > right) {
+17            return NULL;
+18        }
+19
+20        TreeNode* root = new TreeNode(postorder[idx]);
+21
+22        int inIdx = -1;
+23        for(int i = 0; i < inorder.size(); i++) {
+24            if(postorder[idx] == inorder[i]) {
+25                inIdx = i;
+26                break;
+27            }
+28        }
 29
-30        root->left = makeTree(preorder, inorder, idx, inSt, inIdx - 1);
-31        root->right = makeTree(preorder, inorder, idx, inIdx + 1, inEnd);
-32
-33        return root;
-34    } 
-35    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-36        int idx = 0;
-37        TreeNode* ans = makeTree(preorder, inorder, idx, 0, inorder.size()-1);
-38
-39        return ans;
-40    }
-41};
+30        idx--;
+31
+32        root->right = helper(inorder, postorder, idx, inIdx + 1, right);
+33        root->left = helper(inorder, postorder, idx, left, inIdx - 1);
+34
+35        return root;
+36    }
+37    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+38        int idx = postorder.size()-1;
+39
+40        return helper(inorder, postorder, idx, 0, inorder.size()-1);
+41    }
+42};
