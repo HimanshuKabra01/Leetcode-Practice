@@ -1,4 +1,4 @@
-// Last updated: 1/24/2026, 3:23:38 PM
+// Last updated: 2/6/2026, 6:36:26 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,33 +12,38 @@
 11 */
 12class Solution {
 13public:
-14    void rec(TreeNode* root, vector<vector<int>> &ans, vector<int> &subAns, int targetSum, int &currSum) {
-15        if(root == NULL){
-16            return;
-17        }
-18
-19        currSum += root->val;
-20        subAns.push_back(root->val);
-21
-22        if(root->left == NULL && root->right == NULL) {
-23            if(currSum == targetSum) {
-24                ans.push_back({subAns});
-25            }
-26        }
+14    int widthOfBinaryTree(TreeNode* root) {
+15       deque<pair<TreeNode*, unsigned long long int>> q;
+16       q.push_back({root, 0});
+17
+18       int ans = 0;
+19
+20       while(!q.empty()) {
+21            int size = q.size();
+22            unsigned long long int idx = q.front().second;
+23            unsigned long long int end = q.back().second;
+24
+25            int subAns = end - idx + 1;
+26            ans = max(subAns, ans);
 27
-28        rec(root->left, ans, subAns, targetSum, currSum);
-29        rec(root->right, ans, subAns, targetSum, currSum);
-30
-31        currSum -= root->val;
-32        subAns.pop_back();
-33    }
-34    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-35        vector<vector<int>> ans;
-36        vector<int> subAns;
-37        int currSum = 0;
-38
-39        rec(root, ans, subAns, targetSum, currSum);
-40
-41        return ans;
-42    }
-43};
+28            for(int i = 0; i < size; i++) {
+29                TreeNode* curr = q.front().first;
+30                idx = q.front().second;
+31                q.pop_front();
+32
+33                unsigned long long int left = 2 * idx +1;
+34                unsigned long long int right = 2 * idx + 2;
+35
+36                if(curr->left != NULL) {
+37                    q.push_back({curr->left, left});
+38                }
+39
+40                if(curr->right != NULL) {
+41                    q.push_back({curr->right, right});
+42                }
+43            }
+44       }
+45
+46       return ans; 
+47    }
+48};
