@@ -1,4 +1,4 @@
-// Last updated: 2/16/2026, 11:31:09 PM
+// Last updated: 2/18/2026, 1:26:35 AM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,55 +12,33 @@
 11 */
 12class Solution {
 13public:
-14    void trav(TreeNode* root, vector<int> &inorder) {
-15        if(root == NULL) {
-16            return;
-17        }
-18
-19        trav(root->left, inorder);
-20        inorder.push_back(root->val);
-21        trav(root->right, inorder);        
-22    }
-23
-24    void preorder(TreeNode* root, int &first, int &second) {
-25        if(root == NULL) {
-26            return;
-27        }
-28
-29        if(root->val == first) {
-30            root->val = second;
-31        } else if(root->val == second) {
-32            root->val = first;
-33        }
+14    TreeNode* first = NULL;
+15    TreeNode* second = NULL;
+16    TreeNode* prev = NULL;
+17
+18    void trav(TreeNode* root) {
+19        if(root == NULL) {
+20            return;
+21        }
+22
+23        trav(root->left);
+24        
+25        if(prev && prev->val > root->val) {
+26            if(!first) {
+27                first = prev;
+28            }
+29
+30            second = root;
+31        }
+32
+33        prev = root;
 34
-35        preorder(root->left, first, second);
-36        preorder(root->right, first, second);
-37    }
-38
-39    void recoverTree(TreeNode* root) {
-40        vector<int> inorder;
-41
-42        trav(root, inorder);
-43
-44        vector<int> sorted = inorder;
-45
-46        sort(sorted.begin(), sorted.end());
-47
-48        int first;
-49        bool got = false;
-50        int second;
-51        
-52        for(int i = 0; i < inorder.size(); i++) {
-53           if(got == false && inorder[i] != sorted[i]) {
-54            first = inorder[i];
-55            got = true;
-56           } 
-57
-58           if(got == true && inorder[i] != sorted[i]) {
-59            second = inorder[i];
-60           }
-61        }
-62
-63        preorder(root, first, second);
-64    }
-65};
+35        trav(root->right);        
+36    }
+37
+38    void recoverTree(TreeNode* root) {
+39        trav(root);
+40
+41        swap(first->val, second->val);
+42    }
+43};
