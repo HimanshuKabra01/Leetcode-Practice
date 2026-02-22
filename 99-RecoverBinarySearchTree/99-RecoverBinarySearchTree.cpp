@@ -1,4 +1,4 @@
-// Last updated: 2/18/2026, 1:26:35 AM
+// Last updated: 2/23/2026, 2:06:48 AM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,33 +12,53 @@
 11 */
 12class Solution {
 13public:
-14    TreeNode* first = NULL;
-15    TreeNode* second = NULL;
-16    TreeNode* prev = NULL;
-17
-18    void trav(TreeNode* root) {
-19        if(root == NULL) {
-20            return;
-21        }
-22
-23        trav(root->left);
-24        
-25        if(prev && prev->val > root->val) {
-26            if(!first) {
-27                first = prev;
-28            }
-29
-30            second = root;
-31        }
-32
-33        prev = root;
-34
-35        trav(root->right);        
-36    }
-37
-38    void recoverTree(TreeNode* root) {
-39        trav(root);
-40
-41        swap(first->val, second->val);
-42    }
-43};
+14    void recoverTree(TreeNode* root) {
+15        TreeNode* prev = NULL;
+16        TreeNode* first = NULL;
+17        TreeNode* second = NULL;
+18
+19        while(root != NULL) {
+20            if(root->left == NULL) {
+21                if(prev != NULL && prev->val > root->val) {
+22                    if(!first) {
+23                        first = prev;
+24                    }
+25
+26                    second = root;
+27                }
+28
+29                prev = root;
+30                root = root->right;
+31            } else {
+32                TreeNode* IP = root->left;
+33                while(IP->right != NULL && IP->right != root) {
+34                    IP = IP->right;
+35                }
+36
+37                if(IP->right == NULL) {
+38                    IP->right = root;
+39
+40                    root = root->left;
+41                } else {
+42                    if(prev != NULL && prev->val > root->val) {
+43                        if(!first) {
+44                            first = prev;
+45                        }
+46
+47                        second = root;
+48                    }
+49
+50                    prev = root;
+51                    IP->right = NULL;
+52                    root = root->right;
+53                }
+54            }
+55        }
+56
+57        if(first != NULL && second != NULL) {
+58            int temp = first->val;
+59            first->val = second->val;
+60            second->val = temp;
+61        }
+62    }
+63};
