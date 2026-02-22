@@ -1,43 +1,38 @@
-// Last updated: 2/22/2026, 2:28:18 PM
+// Last updated: 2/22/2026, 5:31:29 PM
 1class Solution {
 2public:
-3    int scoreDifference(vector<int>& nums) {
-4        int n = nums.size();
+3    bool isDigitorialPermutation(int n) {
+4        unordered_map<int, int> m;
 5
-6        int scoreA = 0;
-7        int scoreB = 0;
-8
-9        bool a = true;
-10        bool b = false;
-11
-12        for(int i = 0; i < n; i++) {
-13            if(nums[i] % 2 != 0) {
-14                if(a) {
-15                    b = true;
-16                    a = false;
-17                } else {
-18                    b = false;
-19                    a = true;
-20                }
-21            }
+6        m[0] = 1;
+7        int curr = 1;
+8        for(int i = 1; i <= 9; i++) {
+9            curr *= i;
+10
+11            m[i] = curr;
+12        }
+13
+14        unordered_set<string> s;
+15        string num = to_string(n);
+16
+17        sort(num.begin(), num.end());
+18
+19        do {
+20            s.insert(num);
+21        } while(next_permutation(num.begin(), num.end()));
 22
-23            if((i + 1) % 6 == 0) {
-24                if(a) {
-25                    b = true;
-26                    a = false;
-27                } else {
-28                    b = false;
-29                    a = true;
-30                }
-31            }
+23        int sum = 0;
+24
+25        while(n > 0) {
+26            int dig = n % 10;
+27
+28            sum += m[dig];
+29
+30            n /= 10;
+31        }
 32
-33            if(a) {
-34                scoreA += nums[i];
-35            } else {
-36                scoreB += nums[i];
-37            }
-38        }
-39
-40        return scoreA - scoreB;
-41    }
-42};
+33        string ans = to_string(sum);
+34
+35        return s.find(ans) != s.end();
+36    }
+37};
