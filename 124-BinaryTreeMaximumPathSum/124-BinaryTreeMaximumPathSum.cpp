@@ -1,4 +1,4 @@
-// Last updated: 2/6/2026, 6:36:26 PM
+// Last updated: 3/4/2026, 1:11:43 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,38 +12,40 @@
 11 */
 12class Solution {
 13public:
-14    int widthOfBinaryTree(TreeNode* root) {
-15       deque<pair<TreeNode*, unsigned long long int>> q;
-16       q.push_back({root, 0});
-17
-18       int ans = 0;
-19
-20       while(!q.empty()) {
-21            int size = q.size();
-22            unsigned long long int idx = q.front().second;
-23            unsigned long long int end = q.back().second;
-24
-25            int subAns = end - idx + 1;
-26            ans = max(subAns, ans);
-27
-28            for(int i = 0; i < size; i++) {
-29                TreeNode* curr = q.front().first;
-30                idx = q.front().second;
-31                q.pop_front();
-32
-33                unsigned long long int left = 2 * idx +1;
-34                unsigned long long int right = 2 * idx + 2;
-35
-36                if(curr->left != NULL) {
-37                    q.push_back({curr->left, left});
-38                }
-39
-40                if(curr->right != NULL) {
-41                    q.push_back({curr->right, right});
-42                }
-43            }
-44       }
-45
-46       return ans; 
-47    }
-48};
+14    int subMax = INT_MIN;
+15
+16    int helper(TreeNode* root) {
+17        if(root == NULL) {
+18            return 0;
+19        }
+20
+21        int left = helper(root->left);
+22        int right = helper(root->right);
+23
+24        int sum = 0;
+25        if(left < 0 && right < 0) {
+26            sum = root->val;
+27        } else if(left < 0) {
+28            sum = root->val + right;
+29        } else if(right < 0) {
+30            sum = root->val + left;
+31        } else {
+32            sum = left + root->val + right;
+33        }
+34
+35        if(sum > subMax) {
+36            subMax = sum;
+37        }
+38
+39        if((root->val + max(left, right)) < root->val) {
+40            return root->val;
+41        } else {
+42            return root->val + max(left, right);
+43        }
+44    }
+45    int maxPathSum(TreeNode* root) {
+46        int one = helper(root);
+47
+48        return max(one, subMax);
+49    }
+50};
