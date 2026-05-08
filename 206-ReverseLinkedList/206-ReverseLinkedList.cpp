@@ -1,30 +1,38 @@
-// Last updated: 10/23/2025, 2:19:45 PM
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-class Solution {
-public:
-    ListNode* reverseList(ListNode* head) {
-        ListNode* prev = NULL;
-        ListNode* curr = head;
-        ListNode* next = NULL;
-
-        while(curr != NULL) {
-            next = curr->next;
-
-            curr->next = prev;
-
-            prev = curr;
-            curr = next;
-        }
-
-        return prev;
-    }
-};
+// Last updated: 5/8/2026, 7:15:15 PM
+1class Solution {
+2public:
+3    void dfs(vector<vector<int>> &graph, int u, bool &ans, vector<int> &vis, int col) {
+4        if(!ans) return;
+5
+6        int op;
+7        if(col == 1) op = 0;
+8        else if(col == 0) op = 1;
+9
+10        vis[u] = op;
+11
+12        for(int v : graph[u]) {
+13            if(vis[v] == -1) {
+14                dfs(graph, v, ans, vis, vis[u]);
+15            } else if(vis[v] == op) {
+16                ans = false;
+17                return;
+18            }
+19        }
+20    }
+21    bool isBipartite(vector<vector<int>>& graph) {
+22        int V = graph.size();
+23
+24        bool ans = true;
+25        vector<int> vis(V, -1);
+26        for(int i = 0; i < V; i++) {
+27            if(vis[i] != -1) continue;
+28
+29            if(!ans) return false;
+30
+31            dfs(graph, i, ans, vis, 1);
+32        }
+33
+34        if(!ans) return false;
+35        return true;
+36    }
+37};
