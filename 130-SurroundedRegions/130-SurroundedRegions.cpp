@@ -1,81 +1,77 @@
-// Last updated: 3/28/2026, 2:53:36 PM
+// Last updated: 6/14/2026, 9:06:49 PM
 1class Solution {
 2public:
-3    void solve(vector<vector<char>>& board) {
-4        int m = board.size();
-5        int n = board[0].size();
+3    int numEnclaves(vector<vector<int>>& grid) {
+4        int m = grid.size();
+5        int n = grid[0].size();
 6
-7        if(n == 1) {
-8            return;
-9        }
-10
-11        queue<pair<int, int>> q;
-12
-13        for(int i = 0; i < n; i++){
-14            if(board[0][i] == 'O') {
-15                q.push({0, i});
-16                board[0][i] = 'S';
-17            }
-18
-19            if(board[m-1][i] == 'O') {
-20                q.push({m-1, i});
-21                board[m-1][i] = 'S';
-22            }
-23        }
-24
-25        for(int i = 0; i < m; i++){
-26            if(board[i][0] == 'O') {
-27                q.push({i, 0});
-28                board[i][0] = 'S';
-29            }
-30
-31            if(board[i][n-1] == 'O') {
-32                q.push({i, n-1});
-33                board[i][n-1] = 'S';
-34            }
-35        }
-36
-37        while(!q.empty()) {
-38            int k = q.size();
+7        queue<pair<int, int>> q;
+8
+9        for(int i = 0; i < n; i++) {
+10            if(grid[0][i] == 1) {
+11                q.push({0, i});
+12                grid[0][i] = 2;
+13            }
+14
+15            if(grid[m-1][i] == 1) {
+16                q.push({m-1, i});
+17                grid[m-1][i] = 2;
+18            }
+19        }
+20
+21        for(int i = 0; i < m; i++) {
+22            if(grid[i][0] == 1) {
+23                q.push({i, 0});
+24                grid[i][0] = 2;
+25            }
+26
+27            if(grid[i][n-1] == 1) {
+28                q.push({i, n-1});
+29                grid[i][n-1] = 2;
+30            }
+31        }
+32
+33        while(!q.empty()) {
+34            int k = q.size();
+35
+36            for(int l = 0; l < k; l++) {
+37                int i = q.front().first;
+38                int j = q.front().second;
 39
-40            for(int l = 0; l < k; l++) {
-41                int i = q.front().first;
-42                int j = q.front().second;
-43
-44                q.pop();
-45
-46                if(i-1 >= 0 && board[i-1][j] == 'O') {
-47                    q.push({i-1, j});
-48                    board[i-1][j] = 'S';
-49                }
-50
-51                if(j+1 < n && board[i][j+1] == 'O') {
-52                    q.push({i, j+1});
-53                    board[i][j+1] = 'S';
-54                }
-55
-56                if(i+1 < m && board[i+1][j] == 'O') {
-57                    q.push({i+1, j});
-58                    board[i+1][j] = 'S';
-59                }
-60
-61                if(j-1 >= 0 && board[i][j-1] == 'O') {
-62                    q.push({i, j-1});
-63                    board[i][j-1] = 'S';
-64                }
-65            }
-66        }
-67
-68        for(int i = 0; i < m; i++) {
-69            for(int j = 0; j < n; j++) {
-70                if(board[i][j] == 'O') {
-71                    board[i][j] = 'X';
-72                }
+40                q.pop();
+41
+42                if(i-1 >= 0 && grid[i-1][j] == 1) {
+43                    q.push({i-1, j});
+44                    grid[i-1][j] = 2;
+45                }
+46
+47                if(j+1 < n && grid[i][j+1] == 1) {
+48                    q.push({i, j+1});
+49                    grid[i][j+1] = 2;
+50                }
+51
+52                if(i+1 < m && grid[i+1][j] == 1) {
+53                    q.push({i+1, j});
+54                    grid[i+1][j] = 2;
+55                }
+56
+57                if(j-1 >= 0 && grid[i][j-1] == 1) {
+58                    q.push({i, j-1});
+59                    grid[i][j-1] = 2;
+60                }
+61            }
+62        }
+63
+64        int ans = 0;
+65
+66        for(int i = 0; i < m; i++) {
+67            for(int j = 0; j < n; j++) {
+68                if(grid[i][j] == 1) {
+69                    ans++;
+70                }
+71            }
+72        }
 73
-74                if(board[i][j] == 'S') {
-75                    board[i][j] = 'O';
-76                }
-77            }
-78        }
-79    }
-80};
+74        return ans;
+75    }
+76};
