@@ -1,59 +1,26 @@
-// Last updated: 3/26/2026, 11:18:22 PM
+// Last updated: 6/17/2026, 12:09:25 AM
 1class Solution {
 2public:
-3    bool dfs(int u, vector<bool> &vis, vector<bool> &recPath, vector<vector<int>> &adj, stack<int> &s) {
-4        vis[u] = true;
-5        recPath[u] = true;
-6
-7        for(int v : adj[u]) {
-8            if(!vis[v]) {
-9                if (dfs(v, vis, recPath, adj, s)) return true;
-10            } else if(recPath[v]) {
-11                return true;
-12            }
-13        }
-14
-15        s.push(u);
-16        recPath[u] = false;
-17        return false;
-18    }
-19
-20    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-21        vector<int> ans;
-22        stack<int> s;
-23        vector<vector<int>> adj(numCourses);
-24
-25        for(auto &p : prerequisites) {
-26            int a = p[0];
-27            int b = p[1];
-28
-29            adj[b].push_back(a);
-30        }
-31
-32        vector<bool> vis(numCourses, false);
-33        vector<bool> recPath(numCourses, false);
-34
-35        bool possible = true;
-36
-37        for(int i = 0; i < numCourses; i++) {
-38            if(!vis[i]) {
-39                if(dfs(i, vis, recPath, adj, s)){
-40                    possible = false;
-41                }
-42            }
-43        }
-44
-45        if(!possible) {
-46            return {};
-47        }
-48
-49        while(!s.empty()) {
-50            int elem = s.top();
-51            s.pop();
-52
-53            ans.push_back(elem);
-54        }
-55
-56        return ans;
-57    }
-58};
+3    void dfs(int u, int target, vector<vector<int>> &graph, vector<int> &path, vector<vector<int>> &ans) {
+4        path.push_back(u);
+5
+6        if(u == target) ans.push_back(path);
+7        else {
+8            for(int v : graph[u]) {
+9                dfs(v, target, graph, path, ans);
+10            }
+11        }
+12
+13        path.pop_back();
+14    }
+15    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+16        int n = graph.size();
+17        vector<vector<int>> ans;
+18
+19        vector<int> path;
+20
+21        dfs(0, n-1, graph, path, ans);
+22            
+23        return ans;
+24    }
+25};
