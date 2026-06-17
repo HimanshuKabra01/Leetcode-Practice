@@ -1,28 +1,44 @@
-// Last updated: 6/13/2026, 12:34:40 AM
-1class KthLargest {
+// Last updated: 6/17/2026, 5:23:06 PM
+1class Solution {
 2public:
-3    priority_queue<int, vector<int>, greater<int>> pq;
-4    int kth = 0;
-5    KthLargest(int k, vector<int>& nums) {
-6        kth = k;
-7        for(int i = 0; i < nums.size(); i++) {
-8            add(nums[i]);
+3    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+4        int n = wordList.size();
+5
+6        set<string> st;
+7        for(int i = 0; i < n; i++) {
+8            st.insert(wordList[i]);
 9        }
-10    }
-11    
-12    int add(int val) {
-13        pq.push(val);
+10
+11        if(st.find(endWord) == st.end()) {
+12            return 0;
+13        }
 14
-15        if(pq.size() > kth) {
-16            pq.pop();
-17        }
-18
-19        return pq.top();
-20    }
-21};
-22
-23/**
-24 * Your KthLargest object will be instantiated and called as such:
-25 * KthLargest* obj = new KthLargest(k, nums);
-26 * int param_1 = obj->add(val);
-27 */
+15        queue<pair<string, int>> q;
+16        q.push({beginWord, 1});
+17
+18        while(!q.empty()) {
+19            string curr = q.front().first;
+20            int lev = q.front().second;
+21            
+22            q.pop();
+23            for(int i = 0; i < curr.size(); i++) {
+24                char original = curr[i];
+25                for(int j = 0; j < 26; j++) {
+26                    curr[i] = 'a' + j;
+27
+28                    if(curr == endWord) {
+29                        return lev+1;
+30                    }
+31                    else if(st.find(curr) != st.end()) {
+32                        q.push({curr, lev+1});
+33                        st.erase(curr);
+34                    }
+35                }
+36
+37                curr[i] = original;
+38            }
+39        }
+40
+41        return 0;
+42    }
+43};
