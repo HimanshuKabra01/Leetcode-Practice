@@ -1,4 +1,4 @@
-// Last updated: 9/5/2026, 2:14:53 PM
+// Last updated: 9/5/2026, 2:15:01 PM
 1class Solution {
 2public:
 3    int firstStableIndex(vector<int>& nums, int k) {
