@@ -1,30 +1,30 @@
-// Last updated: 8/9/2026, 12:42:51 PM
-class Solution {
-public:
-    void rec(int n, int i, int j, vector<string> &ans, string &s) {
-        if(i+j == 2*n && i == j) {
-            ans.push_back(s);
-            return;
-        }
-
-        if(i < n) {
-            s = s + "(";
-            rec(n, i+1, j, ans, s);
-            s.pop_back();
-        }
-
-        if(j < i) {
-            s = s + ")";
-            rec(n, i, j+1, ans, s);
-            s.pop_back();
-        }
-    }
-    vector<string> generateParenthesis(int n) {
-        vector<string> ans;
-
-        string s = "";
-        rec(n, 0, 0, ans, s);
-
-        return ans;
-    }
-};
+// Last updated: 10/2/2026, 10:31:07 AM
+1class Solution {
+2public:
+3    void rec(int n, int i, int j, vector<string> &ans, string &s) {
+4        if(i+j == 2*n && i == j) {
+5            ans.push_back(s);
+6            return;
+7        }
+8
+9        if(i < n) {
+10            s = s + "(";
+11            rec(n, i+1, j, ans, s);
+12            s.pop_back();
+13        }
+14
+15        if(j < i) {
+16            s = s + ")";
+17            rec(n, i, j+1, ans, s);
+18            s.pop_back();
+19        }
+20    }
+21    vector<string> generateParenthesis(int n) {
+22        vector<string> ans;
+23
+24        string s = "";
+25        rec(n, 0, 0, ans, s);
+26
+27        return ans;
+28    }
+29};
